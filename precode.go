@@ -62,8 +62,10 @@ var task Task
 decoder := json.NewDecoder(r.Body)
     defer r.Body.Close()
  if err := decoder.Decode(&task); err != nil {
+
         http.Error(w, "Некорректный JSON: "+err.Error(), http.StatusBadRequest)
         return
+
     }
 
     tasks[task.ID] = task
@@ -81,7 +83,8 @@ task, ok := tasks[id]
 if !ok {
 
 	http.Error(w, "Задание не найдено", http.StatusNoContent)
-        return
+        
+	return
 
 }
 
@@ -104,13 +107,17 @@ func deletePerIdTasks(w http.ResponseWriter, r *http.Request) {
 id := chi.URLParam(r, "id")
 
 	 if r.Method != http.MethodDelete {
+
         http.Error(w, "Метод не поддерживается", http.StatusMethodNotAllowed)
         return
+
     }
 
 		 if _, exists := tasks[id]; !exists {
+
         http.Error(w, "Задание не найдено", http.StatusNotFound)
         return
+				
     }
 
     delete(tasks, id)
